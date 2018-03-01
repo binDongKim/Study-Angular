@@ -1,4 +1,4 @@
-# Angular Change Detection Strategy
+# Change Detection Strategy
 
 ## Default vs OnPush
 
