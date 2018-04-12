@@ -82,6 +82,7 @@
 
 
 
+
 ## Why do we need ngDoCheck?
 
 With `OnPush` strategy, we tell Angular that the change detection should be executed on this component when the input binding changes, I mean, *object reference changes*. So when the property of an object or array changes(of input bindings), Angular will not detect it so the change detection won't be executed. If we want to track it, we need to manually do it. We can use the `ngDoCheck` lifecycle hook to check the object/array mutation and notify Angular using `markForCheck` method:
