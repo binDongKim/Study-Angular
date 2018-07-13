@@ -4,9 +4,9 @@
 
 ### *ngIf vs hidden
 
-> *ngIf : **Adds/Removes** the element to DOM.
+> `*ngIf`: **Adds/Removes** the element to DOM.
 >
-> hidden: **Shows/hides** the element in DOM.
+> `hidden`: **Shows/hides** the element in DOM.
 
 
 
