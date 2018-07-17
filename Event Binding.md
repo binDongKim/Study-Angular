@@ -1,4 +1,4 @@
-# Event Binding in Angular
+# Event Binding
 
 ## Syntax
 

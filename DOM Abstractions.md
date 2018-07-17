@@ -1,4 +1,4 @@
-# DOM Abstractions in Angular
+# DOM Abstractions
 
 DOM Abstractions come in a form of the following reference types:
 

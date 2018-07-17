@@ -1,4 +1,4 @@
-# Directive in Angular
+# Directive
 
 - The Angular team recommends using directives as *attributes*, prefixed with a namespace, e.g. qq(namespace)DirectiveName.
 

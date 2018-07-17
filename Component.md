@@ -1,4 +1,4 @@
-# Component in Angular
+# Component
 
 - In Angular, *ComponentFactory* creates Component.
 - Angular makes a factory for each component if either it's found/used in template or it's declared in `entryComponents` field in a module.
