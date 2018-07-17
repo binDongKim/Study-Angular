@@ -10,20 +10,6 @@ DOM Abstractions come in a form of the following reference types:
 
 
 
-## @ViewChild / @ViewChildren
-
-`@ViewChild/@ViewChildren` is the way Angular provides for us to access those abstractions inside a component/directive class.
-
-The basic syntax to `ViewChild` decorator is the following:
-
-```javascript
-@ViewChild([reference from template], {read: [reference type]});
-```
-
-The second parameter `read` is not always required because Angular can infer it by the type of the DOM element. For example, if it's a simple html element like `span`, Angular returns `ElementRef`. Some references like `ViewContainerRef` cannot be inferred so you should ask it specifically by declaring the `read` parameter with the type.
-
-
-
 ## ElementRef
 
 This is the most basic abstraction. It only holds the native element that it's associated with.
