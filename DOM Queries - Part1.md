@@ -1,28 +1,9 @@
-# DOM Queries
+# DOM Queries - Part1
 
 - @ViewChild
 - @ViewChildren
-
-Usually, these decorators work in pair with template reference variables. A **template reference variable** is simply a named reference to a DOM element within a template. You can view it as something similar to `id` attribute of an `html` element. You mark a DOM element with a template reference and then **query** it inside a class using `ViewChild` decorator.
-
-Example:
-
-```javascript
-@Component({
-    selector: 'sample',
-    template: `
-        <span #tref>I am span</span>
-    `
-})
-export class SampleComponent implements AfterViewInit {
-    @ViewChild("tref", {read: ElementRef}) tref: ElementRef;
-
-    ngAfterViewInit(): void {
-        // outputs `I am span`
-        console.log(this.tref.nativeElement.textContent);
-    }
-}
-```
+- ~~@ContentChild~~
+- ~~@ContentChildren~~
 
 
 
@@ -157,7 +138,7 @@ or
 
 ### @ViewChild with Directive
 
-`@ViewChild` an instantiate a directive within a component and then the component will be able to access the directive's methods.
+`@ViewChild` can instantiate a directive within a component and then the component will be able to access the directive's methods.
 
 ```javascript
 import { Directive, ElementRef } from '@angular/core';
@@ -212,10 +193,48 @@ Many simple interactions can be coded directly in the template using template re
 
 
 
+## @ViewChildren
+
+```javascript
+@Component({
+  selector: 'todo-app',
+  template: `...`
+})
+class TodoAppComponent implements AfterViewInit {
+  @ViewChildren(TodoComponent) todoComponents: QueryList<TodoComponent>;
+
+  constructor(
+      private todos: TodoList
+  ) {}
+  ngAfterViewInit() {
+    // available here
+  }
+}
+```
+
+- When you want multiple elements to query, in this case, `TodoComponent`, use `@ViewChildren`.
+- The `@ViewChildren` decorator supports directive or component type as parameter, or the name of a template variable.
+- It doesn't query elements that exist within the `ng-content` tag.
+
+
+
+### QueryList
+
+- The return type of `@ViewChildren` is `QueryList`.
+- It's an simple object which stores a list of items but Angular will automatically update the object items when the state of the application changes.
+- Think of the `QueryList` as an observable collection which can emit events once items are added or removed from it. We can access the observable wrapped by the `QueryList` with its `changes` property. [Ref](https://angular.io/api/core/QueryList#changes)
+
+
+
+## So basically...
+
+- Any directive, component and element which is part of component template can be accessed as `@ViewChild`/`@ViewChildren`.
+- `@ViewChild`/`@ViewChildren` are ~~only~~ initialised by the time the `AfterViewInit` lifecycle phase has been run. 
+
+
+
 ## References
 
 - [Angular @ViewChild: In-Depth Explanation](https://blog.angular-university.io/angular-viewchild/)
-
 - [Angular @ViewChild Example](https://www.concretepage.com/angular-2/angular-2-viewchild-example)
-
-  
+- [Understanding @ViewChildren, @ViewChild, @ContentChildren and @ContentChild](https://medium.com/@tkssharma/understanding-viewchildren-viewchild-contentchildren-and-contentchild-b16c9e0358e)
