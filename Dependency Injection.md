@@ -72,6 +72,7 @@ export class AppModule { }
 
 - Services can also be provided in speicifc components.
 - Services provided in component-level is only available within that component injector or in any of its child components.
+- Every component instance has its own injector. Providing the service at the component level ensures that every instance of the component gets its own, private instance of the service.
 
 
 
@@ -90,8 +91,9 @@ The choices lead to differences in the final bundle size, service scope and serv
 **Case 2.** Angular **module** providers(`@NgModule.providers`):
 
 -  It's registered with the application's root injector unless the module is *lazy loaded*.
-- Angular can inject the corresponding services in any class it creates.
-- Once created, a service instance lives for the life of the app and Angular injects this one service instance in every class that needs it(Singleton).
+-  Angular can inject the corresponding services in any class it creates.
+-  Once created, a service instance lives for the life of the app and Angular injects this one service instance in every class that needs it(Singleton).
+-  When `providers` of `@NgModule()` decorator configures a service in application module then that service will be available for dependency injection in all those components which are configured in `declarations` metadata of that `@NgModule()` decorator. 
 
 **Case 3.** Component's providers(`@Component.providers`):
 
@@ -103,8 +105,11 @@ The choices lead to differences in the final bundle size, service scope and serv
 
 ## Providers
 
-- The injector relies on **providers** to create instances of the services that the injector injects into components, directives, pipes and other services.
+- The injector relies on `providers` to create instances of the services that the injector injects into components, directives, pipes and other services.
 - You must register a service provider, or the injector won't know how to create the service.
+- `providers` has two parts: **Token** and **Provider Definition Object**.
+  - **Token** is configured by `provide` attribute.
+  - **Provider Definition Object** is configured by `useClass`, `useExisting`, `useValue`, `useFactory`.
 
 
 
@@ -134,7 +139,9 @@ providers: [
 ]
 ```
 
-You may want to ask a different class to provide the service. For example, the above code tells the injector to return a `BetterLogger` instance when something asks for the `Logger`.
+You may want to ask a different class to provide the service. For example, the above code tells the injector to return a `BetterLogger` instance when something asks for the `Logger`. 
+
+*Note*: The class type of provider definition object must be same as token class or its subclass.
 
 
 
@@ -364,17 +371,69 @@ constructor(@Inject(Token, null));
 
 ## Hierarchical Dependency Injectors
 
-Angular has a *Hierarchical Dependency Injection* system. There's a tree of injectors that parallel an application's component tree.
+> Angular has a *Hierarchical Dependency Injection* system. There's a tree of injectors that parallel an application's component tree.
 
 
 
 ### The Injector Tree
 
+- An Angular application is a tree of components and each component instance has its own injector so, the tree of components parallels the tree of injectors.
+- The component's injector may be a proxy for an ancestor injector higher in the component tree.
 
 
 
+#### Injector Bubbling
+
+- When a component requests a dependency, Angular tries to satisfy that dependency with a provider registered in that component's own injector.
+- If the component's injector lacks the provider, it passes the request up to its parent component's injector.
+- If that injector can't satisfy the request, it passes it along to its parent injector.
+- The requests keep bubbling up until Angular finds an injector that can handle the request .
+- If it can't be resolved on the root injector, Angular throws an error.
 
 
+
+#### Re-providing a service at different levels
+
+You can re-register a provider for a particular dependency token at multiple levels of the injector tree.
+
+
+
+### Control Dependency Lookup with *@Optional()* and *@Host()*
+
+When a component requests a dependency, Angular starts with that component's injector and walks up the injector tree until it finds the first suitable provider. Angular throws an error if it can't find the dependency during that walk.
+
+**But**, you can modify/control Angular's search behaviour with the `@Host` and `@Optional` decorators.
+
+- `@Optional` decorator tells Angular to continue even if it can't find the dependency. Angular sets the injection parameter to `null` instead.
+- `@Host` decorator stops the upward search at the *host* component. The *host* component is typically the component requesting the dependency. But when this component is projected into a *parent* component, that parent component becomes the host.
+
+Example:
+
+```javascript
+@Component({
+    selector: 'app-hero-contact',
+    template: `
+        <div>Phone #: {{phoneNumber}}
+        <span *ngIf="hasLogger">!!!</span></div>
+	`
+})
+export class HeroContactComponent {
+    hasLogger = false;
+	constructor(
+        @Host()
+        private heroCache: HeroCacheService,
+ 
+        @Host()     
+		@Optional() // ok if the logger doesn't exist
+      	private loggerService: LoggerService
+  	) {
+        if (loggerService) {
+        	this.hasLogger = true;
+        	loggerService.logInfo('HeroContactComponent can log!');
+        }
+	}
+}
+```
 
 
 
