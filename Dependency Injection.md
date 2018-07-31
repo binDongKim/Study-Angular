@@ -9,7 +9,7 @@
 
 
 
-## @Injectable Providers
+## @Injectable Providers - Preferred way!!
 
 - The **@Injectable** decorator assures Angular that the class with this decorator can have dependencies. In other words, Angular(Injector) can inject things(services) into the class.
 
@@ -43,7 +43,7 @@
   }
   ```
 
-  We declare that this service should be created by any injector that includes HeroModule.
+  We declare that this service should be created by any injector that includes HeroModule. In other words, `HeroService` will only be available to applications if they import `HeroModule`.
 
 
 
