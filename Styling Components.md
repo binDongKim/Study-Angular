@@ -165,9 +165,9 @@ This will generate a style at runtime like this:
 
 ## The `:host-context` pseudo-class selector
 
-Sometimes, it's useful to apply styles based on some condition *outside* of a component's view. For instance, a CSS theme class could be applied to the document <body> element, and you may want to change how your component looks based on that. The `:host-context` selector looks for a CSS class in any ancestor of the component host element, up to the document root.
+Sometimes, it's useful to apply styles based on some condition *outside* of a component's view. For instance, a CSS theme class could be applied to the document `<body>` element, and you may want to change how your component looks based on that. The `:host-context` selector looks for a CSS class in any ancestor of the component host element, up to the document root.
 
-The following example applies a `background-color` style to all <h2> elements *inside* the component only if some ancestor element has the CSS class name ~~theme-light~~:
+The following example applies a `background-color` style to all `<h2>` elements *inside* the component only if some ancestor element has the CSS class name ~~theme-light~~:
 
 ```css
 :host-context(.theme-light) h2 {
