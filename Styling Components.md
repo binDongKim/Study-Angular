@@ -106,6 +106,13 @@ The `_ngcontent-c1` property is unique to elements of the `blue-button` template
   </app-root>
   ```
 
+- This following style would be applied only when the host has the specified CSS class:
+
+  ```css
+  :host(.className) {
+      width: 500px;
+  }
+  ```
 
 
 ## Combining the `:host` selector with other selectors
@@ -157,6 +164,16 @@ This will generate a style at runtime like this:
 
 
 ## The `:host-context` pseudo-class selector
+
+Sometimes, it's useful to apply styles based on some condition *outside* of a component's view. For instance, a CSS theme class could be applied to the document <body> element, and you may want to change how your component looks based on that. The `:host-context` selector looks for a CSS class in any ancestor of the component host element, up to the document root.
+
+The following example applies a `background-color` style to all <h2> elements *inside* the component only if some ancestor element has the CSS class name ~~theme-light~~:
+
+```css
+:host-context(.theme-light) h2 {
+    background-color: #eef;
+}
+```
 
 Common use case: **Theme enabling classes**
 
