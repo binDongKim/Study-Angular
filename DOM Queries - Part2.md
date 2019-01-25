@@ -37,7 +37,7 @@ For whatever reason, it often happens that your inner component is not a direct 
 
 ```html
 <wrapper>
-	<ng-container>
+    <ng-container>
     	<your-inner-component></your-inner-component>
     </ng-container>
 </wrapper>
