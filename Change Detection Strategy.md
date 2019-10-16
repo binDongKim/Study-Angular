@@ -9,7 +9,7 @@
 
   - Doing this will instruct Angular to run change detection on these components and their sub-tree only when new references are passed to them.
 
-  - When using OnPush detectors, then the framework will check an OnPush component when any of its input properties changes, when it fires an event, or when an Observable fires an event.
+  - When using OnPush detectors, then the framework will check an OnPush component when any of its input properties changes, when it fires an event, or when an Observable binded to the template via `async pipe` emits an value.
 
   - You probably know that Angular tracks binding inputs by object reference. It means that if an object reference hasn’t changed the binding change is not detected and change detection is not executed for a component that uses OnPush strategy.
 
